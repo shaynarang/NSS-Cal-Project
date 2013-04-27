@@ -1,0 +1,25 @@
+Cal Project
+
+What we need to know?
+Leap years
+Number of days in a month
+Text justification
+What day of the week the 1st falls on (use Zeller's Congruence)
+There are exceptions for every 4th, 100th, and 400th years
+
+0. Create Git repo
+
+1. Start with Integration tests (test complete output)
+ex. assert_equal('cal 2 2012', ruby cal.rb 2 2012)
+
+2. Submit link to integration tests to Canvas
+
+3. Implement one method with tests
+
+4. Commit and submit link to Canvas
+
+Sample methods:
+print month_year
+print days_of_week
+print first_day_of_week (use Zeller's Congruence)
+print format_month (date spacing)
