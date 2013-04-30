@@ -6,9 +6,15 @@ Calendar project for the Nashville Software School. The objective is to re-creat
 List of Methods:
 
 initialize
+
 get_month_header
+
 get_days_of_week
+
 get_first_day
+
 leap?
+
 get_dates
+
 print_cal
