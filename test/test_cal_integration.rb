@@ -31,7 +31,7 @@ class CalIntegrationTest < Test::Unit::TestCase
   def test_05_common_year
     assert_equal(`cal 2 2100`, `ruby lib/cal.rb 2 2100`)
     #common year
-  # end
+  end
 
   def test_06_leap_year
     assert_equal(`cal 2 1804`, `ruby lib/cal.rb 2 1804`)

@@ -3,20 +3,31 @@ class Cal
   def initialize(month, year)
     @month = month.to_i
     @year = year.to_i
+    if @month > 0 and @year == 0
+      @year = @month
+      @month = 1
+      print_year
+    elsif @month == 0 and @year == 0
+      time = Time.new
+      @year = time.year
+      @month = time.month
+      print_month
+    else
+      print_month
+    end
   end
 
   def get_month_header
-    month_array = ["    January", "   February", "     March", "     April", "May", "     June", "     July", "    August", "   September", "    October", "   November", "   December"]
+    month_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     chosen_month = month_array[@month-1]
-    "#{chosen_month} #{@year}\n"
+    "#{chosen_month}"
   end
 
   def get_days_of_week
-    "Su Mo Tu We Th Fr Sa\n"
+    "Su Mo Tu We Th Fr Sa"
   end
 
   def get_first_day
-
     m = @month
     if m == 1
       m = 13
@@ -42,61 +53,81 @@ class Cal
   end
 
   def get_dates
+    twenty_eight_day_array = []
+    i = 1
+    while i <= 28
+      twenty_eight_day_array << i
+      twenty_eight_day_array << " "
+      if i <= 8
+        twenty_eight_day_array << " "
+      end
+      i += 1
+    end
 
-    twenty_eight_day_array = ["1", "  2", "  3", "  4", "  5", "  6", "  7", "  8", "  9", " 10", " 11", " 12", " 13", " 14", " 15", " 16", " 17", " 18", " 19", " 20", " 21", " 22", " 23", " 24", " 25", " 26", " 27", " 28", "\n\n"]
-    twenty_nine_day_array = ["1", "  2", "  3", "  4", "  5", "  6", "  7", "  8", "  9", " 10", " 11", " 12", " 13", " 14", " 15", " 16", " 17", " 18", " 19", " 20", " 21", " 22", " 23", " 24", " 25", " 26", " 27", " 28", " 29", "\n\n"]
-    thirty_day_array = ["1", "  2", "  3", "  4", "  5", "  6", "  7", "  8", "  9", " 10", " 11", " 12", " 13", " 14", " 15", " 16", " 17", " 18", " 19", " 20", " 21", " 22", " 23", " 24", " 25", " 26", " 27", " 28", " 29", " 30", "\n\n"]
-    thirty_one_day_array = ["1", "  2", "  3", "  4", "  5", "  6", "  7", "  8", "  9", " 10", " 11", " 12", " 13", " 14", " 15", " 16", " 17", " 18", " 19", " 20", " 21", " 22", " 23", " 24", " 25", " 26", " 27", " 28", " 29", " 30", " 31", "\n\n"]
+    twenty_nine_day_array = []
+    j = 1
+    while j <= 29
+      twenty_nine_day_array << j
+      twenty_nine_day_array << " "
+      if j <= 8
+        twenty_nine_day_array << " "
+      end
+      j += 1
+    end
 
-    if @month == 1
+    thirty_day_array = []
+    k = 1
+    while k <= 30
+      thirty_day_array << k
+      thirty_day_array << " "
+      if k <= 8
+        thirty_day_array << " "
+      end
+      k += 1
+    end
+
+    thirty_one_day_array = []
+    l = 1
+    while l <= 31
+      thirty_one_day_array << l
+      thirty_one_day_array << " "
+      if l <= 8
+        thirty_one_day_array << " "
+      end
+      l += 1
+    end
+
+    if @month == 1 or @month == 3 or @month == 5 or @month == 7 or @month == 8 or @month == 10 or @month == 12
       storage = thirty_one_day_array
-    elsif @month == 3
-      storage = thirty_one_day_array
-    elsif @month == 4
-      storage = thirty_day_array
-    elsif @month == 5
-      storage = thirty_one_day_array
-    elsif @month == 6
-      storage = thirty_day_array
-    elsif @month == 7
-      storage = thirty_one_day_array
-    elsif @month == 8
-      storage = thirty_one_day_array
-    elsif @month == 9
-      storage = thirty_day_array
-    elsif @month == 10
-      storage = thirty_one_day_array
-    elsif @month == 11
-      storage = thirty_day_array
-    elsif @month == 12
-      storage = thirty_one_day_array
-    elsif @month == (2) and (leap?)
+    elsif @month == 4 or @month == 6 or @month == 9 or @month == 11
+      storage = thirty_day_array    
+    elsif @month == 2 and leap?
       storage = twenty_nine_day_array
     else
       storage = twenty_eight_day_array
     end
 
     if get_first_day == "Sunday"
-      storage = storage.unshift(" ")    
+      storage = storage.unshift(spacer(1))    
     elsif get_first_day == "Monday"
-      storage = storage.unshift("    ")
+      storage = storage.unshift(spacer(4))
     elsif get_first_day == "Tuesday"
-      storage = storage.unshift("       ")
+      storage = storage.unshift(spacer(7))
     elsif get_first_day == "Wednesday"
-      storage = storage.unshift("          ")
+      storage = storage.unshift(spacer(10))
     elsif get_first_day == "Thursday"
-      storage = storage.unshift("             ")
-    elsif get_first_day == ("Friday") and (@month == 2)
-      storage = storage.unshift("                ")
-      storage = storage.join
+      storage = storage.unshift(spacer(13))
+    elsif get_first_day == "Friday" and (@month == 2)
+      storage = storage.unshift(spacer(16))
+      storage = storage.join.rstrip
       storage[20] = "\n"
       storage[41] = "\n"
       storage[62] = "\n"
       storage[83] = "\n"
       return storage
     elsif get_first_day == "Friday"
-      storage = storage.unshift("                ")
-      storage = storage.join
+      storage = storage.unshift(spacer(16))
+      storage = storage.join.rstrip
       storage[20] = "\n"
       storage[41] = "\n"
       storage[62] = "\n"
@@ -104,16 +135,16 @@ class Cal
       storage[104] = "\n"
       return storage
     elsif get_first_day == ("Saturday") and (@month == 2)
-      storage = storage.unshift("                   ")
-      storage = storage.join
+      storage = storage.unshift(spacer(19))
+      storage = storage.join.rstrip
       storage[20] = "\n"
       storage[41] = "\n"
       storage[62] = "\n"
       storage[83] = "\n"
       return storage
     elsif get_first_day == "Saturday"
-      storage = storage.unshift("                   ")
-      storage = storage.join
+      storage = storage.unshift(spacer(19))
+      storage = storage.join.rstrip
       storage[20] = "\n"
       storage[41] = "\n"
       storage[62] = "\n"
@@ -122,7 +153,7 @@ class Cal
       return storage
     end
 
-  storage = storage.join
+  storage = storage.join.rstrip
   storage[20] = "\n"
   storage[41] = "\n"
   storage[62] = "\n"
@@ -131,9 +162,99 @@ class Cal
 
   end
 
-  def print_cal
-    puts "#{get_month_header}#{get_days_of_week}#{get_dates}"
-    return "#{get_month_header}#{get_days_of_week}#{get_dates}"
+  def get_week(week)
+    date_string = get_dates
+    if week == 0
+      date_string.slice(0..19)
+    elsif week == 1
+      date_string.slice(21..40)
+    elsif week == 2
+      date_string.slice(42..61)
+    elsif week == 3
+      date_string.slice(63..82)
+    elsif week == 4
+      date_string.slice(84..103) 
+    elsif week == 5
+      if date_string.slice(105..124) == nil
+        return "                    "
+      else
+        date_string.slice(105..124)
+      end
+    end
+  end
+
+  def spacer(n)
+    spaces = ""
+    n.times do
+      spaces << " "
+    end
+    spaces
+  end
+
+  def print_month
+    header = "#{get_month_header} #{@year}"
+    header = header.center(20).rstrip
+    puts "#{header}\n#{get_days_of_week}\n#{get_dates}\n\n"
+    return "#{get_month_header} #{@year}\n#{get_days_of_week}\n#{get_dates}\n\n"
+  end
+
+  def print_year
+
+    compiled_year = ""
+
+    starting_index = 1
+    while starting_index < 13
+    ending_index = starting_index + 2
+    month_line = ""
+    (starting_index..ending_index).each do |month|
+      @month = month
+      if @month == ending_index
+        month_line << get_month_header.center(20).rstrip
+        month_line << "\n"
+      else
+        month_line << get_month_header.center(20)
+        month_line << "  "
+      end
+    end
+
+    day_line = ""
+    3.times do |month_index|
+      day_line << get_days_of_week
+      if month_index == 2
+        day_line << "\n"
+      else
+        day_line << "  "
+      end
+    end
+
+    week_lines = ""
+    6.times do |week_index|
+      (starting_index..ending_index).each do |month|
+        @month = month
+        week_lines << get_week(week_index)
+        if get_week(week_index).size < 20
+          buffer = 20 - get_week(week_index).size
+          week_lines << spacer(buffer)
+        end
+        if @month == ending_index
+          week_lines << "\n"
+        else
+          week_lines << "  "
+        end
+      end
+    end
+
+    starting_index += 3
+    ending_index += 3
+
+    compiled_year << "#{month_line}#{day_line}#{week_lines}"
+
+    end
+    year_title = @year
+    year_title = year_title.to_s
+    year_title = year_title.center(65).rstrip
+    puts "#{year_title}\n\n#{compiled_year}"
+
   end
 
 end
@@ -142,73 +263,6 @@ if __FILE__ == $0
   month = ARGV[0]
   year = ARGV[1]
   output = Cal.new(month, year)
-  output.print_cal
+  # output.print_month
 end
-
-
-    #February
-    # if @month == 2 and cal.get_first_day == "Sunday"
-    #   " " + "1  2  3  4  5  6  7\n 8  9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29\n\n"
-
-    # elsif @month == 2 and cal.get_first_day == "Monday"
-    #   "    " + "1  2  3  4  5  6\n 7  8  9 10 11 12 13\n14 15 16 17 18 19 20\n21 22 23 24 25 26 27\n28 29\n\n"
-
-    # elsif @month == 2 and cal.get_first_day == "Tuesday"
-    #   "       " + "1  2  3  4  5\n 6  7  8  9 10 11 12\n13 14 15 16 17 18 19\n20 21 22 23 24 25 26\n27 28 29\n\n"
-
-    # elsif @month == 2 and cal.get_first_day == "Wednesday"
-    #   "          " + "1  2  3  4\n 5  6  7  8  9 10 11\n12 13 14 15 16 17 18\n19 20 21 22 23 24 25\n26 27 28 29\n\n"
-
-    # elsif @month == 2 and cal.get_first_day == "Thursday"
-    #   "             " + "1  2  3\n 4  5  6  7  8  9 10\n11 12 13 14 15 16 17\n18 19 20 21 22 23 24\n25 26 27 28 29\n\n"
-
-    # elsif @month == 2 and cal.get_first_day == "Friday"
-    #   "                " + "1  2\n 3  4  5  6  7  8  9\n10 11 12 13 14 15 16\n17 18 19 20 21 22 23\n24 25 26 27 28 29\n\n"
-
-    # elsif @month == 2 and cal.get_first_day == "Saturday"
-    #   "                   " + "1\n 2  3  4  5  6  7  8\n 9 10 11\n12 13 14 15\n16 17 18 19 20 21 22\n23 24 25 26 27 28 29\n\n"
-
-    # #Thirty-one Day Months
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Sunday"
-    #   " " + "1  2  3  4  5  6  7\n 8  9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29 30 31\n\n"
-    
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Monday"
-    #   "    " + "1  2  3  4  5  6\n 7  8  9 10 11 12 13\n14 15 16 17 18 19 20\n21 22 23 24 25 26 27\n28 29 30 31\n\n"
-    
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Tuesday"
-    #   "       " + "1  2  3  4  5\n 6  7  8  9 10 11 12\n13 14 15 16 17 18 19\n20 21 22 23 24 25 26\n27 28 29 30 31\n\n"
-    
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Wednesday"
-    #   "          " + "1  2  3  4\n 5  6  7  8  9 10 11\n12 13 14 15 16 17 18\n19 20 21 22 23 24 25\n26 27 28 29 30 31\n\n"
-
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Thursday"
-    #   "             " + "1  2  3\n 4  5  6  7  8  9 10\n11 12 13 14 15 16 17\n18 19 20 21 22 23 24\n25 26 27 28 29 30 31\n\n"
-
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Friday"
-    #   "                " + "1  2\n 3  4  5  6  7  8  9\n10 11 12 13 14 15 16\n17 18 19 20 21 22 23\n24 25 26 27 28 29 30\n31\n\n"
-
-    # elsif (@month == (1 or 3 or 5 or 7 or 8 or 10 or 12)) and cal.get_first_day == "Saturday"
-    #   "                   " + "1\n 2  3  4  5  6  7  8\n 9 10 11\n12 13 14 15\n16 17 18 19 20 21 22\n23 24 25 26 27 28 29\n30 31\n\n"
-
-    # #Thirty Day Months
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Sunday"
-    #   " " + "1  2  3  4  5  6  7\n 8  9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29 30\n\n"
-    
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Monday"
-    #   "    " + "1  2  3  4  5  6\n 7  8  9 10 11 12 13\n14 15 16 17 18 19 20\n21 22 23 24 25 26 27\n28 29 30\n\n"
-    
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Tuesday"
-    #   "       " + "1  2  3  4  5\n 6  7  8  9 10 11 12\n13 14 15 16 17 18 19\n20 21 22 23 24 25 26\n27 28 29 30\n\n"
-    
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Wednesday"
-    #   "          " + "1  2  3  4\n 5  6  7  8  9 10 11\n12 13 14 15 16 17 18\n19 20 21 22 23 24 25\n26 27 28 29 30\n\n"
-
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Thursday"
-    #   "             " + "1  2  3\n 4  5  6  7  8  9 10\n11 12 13 14 15 16 17\n18 19 20 21 22 23 24\n25 26 27 28 29 30\n\n"
-
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Friday"
-    #   "                " + "1  2\n 3  4  5  6  7  8  9\n10 11 12 13 14 15 16\n17 18 19 20 21 22 23\n24 25 26 27 28 29 30\n\n"
-
-    # elsif (@month == (4 or 6 or 9 or 11)) and cal.get_first_day == "Saturday"
-    #   "                   " + "1\n 2  3  4  5  6  7  8\n 9 10 11\n12 13 14 15\n16 17 18 19 20 21 22\n23 24 25 26 27 28 29\n30\n\n"
-    # end
+  
