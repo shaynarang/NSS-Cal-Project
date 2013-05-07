@@ -20,7 +20,6 @@ class Cal
   def get_month_header
     month_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     chosen_month = month_array[@month-1]
-    "#{chosen_month}"
   end
 
   def get_days_of_week
@@ -52,6 +51,28 @@ class Cal
     end
   end
 
+  def line_breaker(storage)
+    storage = storage.join.rstrip
+    storage[20] = "\n"
+    storage[41] = "\n"
+    storage[62] = "\n"
+    storage[83] = "\n"
+    if storage[104] == nil
+      return storage
+    else
+      storage[104] = "\n"
+    end
+    storage
+  end
+
+  def spacer(n)
+    spaces = ""
+    n.times do
+      spaces << " "
+    end
+    spaces
+  end
+
   def get_dates
     storage = []
     i = 1
@@ -64,14 +85,14 @@ class Cal
       i += 1
     end
 
-    if @month == 1 or @month == 3 or @month == 5 or @month == 7 or @month == 8 or @month == 10 or @month == 12
-      storage = storage.push(29," ",30," ",31)
-    elsif @month == 4 or @month == 6 or @month == 9 or @month == 11
+    if @month == 4 or @month == 6 or @month == 9 or @month == 11
       storage = storage.push(29," ",30)  
     elsif @month == 2 and leap?
       storage = storage.push(29)
-    else
+    elsif @month == 2
       storage
+    else
+      storage = storage.push(29," ",30," ",31)
     end
 
     if get_first_day == "Sunday"
@@ -100,28 +121,6 @@ class Cal
 
   line_breaker(storage)
 
-  end
-
-  def line_breaker(storage)
-    storage = storage.join.rstrip
-    storage[20] = "\n"
-    storage[41] = "\n"
-    storage[62] = "\n"
-    storage[83] = "\n"
-    if storage[104] == nil
-      return storage
-    else
-      storage[104] = "\n"
-    end
-    storage
-  end
-
-  def spacer(n)
-    spaces = ""
-    n.times do
-      spaces << " "
-    end
-    spaces
   end
 
   def get_week(week)
