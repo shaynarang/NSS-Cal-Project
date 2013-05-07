@@ -58,4 +58,53 @@ class CalIntegrationTest < Test::Unit::TestCase
     #common year
   end
 
+  def test_11_complete_output
+    assert_equal(`cal 2012`, `ruby lib/cal.rb 2012`)
+    #leap year
+  end
+
+  def test_12_common_year
+    assert_equal(`cal 1800`, `ruby lib/cal.rb 1800`)
+    #common year
+  end
+
+  def test_13_common_year
+    assert_equal(`cal 1900`, `ruby lib/cal.rb 1900`)
+    #common year
+  end
+
+  def test_14_leap_year
+    assert_equal(`cal 2000`, `ruby lib/cal.rb 2000`)
+    #leap year
+  end
+
+  def test_15_common_year
+    assert_equal(`cal 2100`, `ruby lib/cal.rb 2100`)
+    #common year
+  end
+
+  def test_16_leap_year
+    assert_equal(`cal 1804`, `ruby lib/cal.rb 1804`)
+    #leap year
+  end
+
+  def test_17_leap_year
+    assert_equal(`cal 1852`, `ruby lib/cal.rb 1852`)
+    #leap year
+  end
+
+  def test_18_leap_year
+    assert_equal(`cal 1904`, `ruby lib/cal.rb 1904`)
+    #leap year
+  end
+
+  def test_19_leap_year
+    assert_equal(`cal 1952`, `ruby lib/cal.rb 1952`)
+    #leap year
+  end
+
+  def test_20_common_year
+    assert_equal(`cal 2013`, `ruby lib/cal.rb 2013`)
+    #common year
+  end
 end

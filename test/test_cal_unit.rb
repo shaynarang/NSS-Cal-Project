@@ -78,9 +78,9 @@ class CalUnitTest < Test::Unit::TestCase
     assert_equal("             1  2  3\n 4  5  6  7  8  9 10\n11 12 13 14 15 16 17\n18 19 20 21 22 23 24\n25 26 27 28 29", cal.get_dates)
   end
 
-  def test_26_print_month_prints_month
+  def test_26_format_month_formats_month
     cal = Cal.new(2, 1912)
-    assert_equal("February 1912\nSu Mo Tu We Th Fr Sa\n             1  2  3\n 4  5  6  7  8  9 10\n11 12 13 14 15 16 17\n18 19 20 21 22 23 24\n25 26 27 28 29\n\n", cal.print_month)
+    assert_equal("   February 1912\nSu Mo Tu We Th Fr Sa\n             1  2  3\n 4  5  6  7  8  9 10\n11 12 13 14 15 16 17\n18 19 20 21 22 23 24\n25 26 27 28 29\n\n", cal.format_month)
   end
 
   def test_27_get_week_returns_specified_week

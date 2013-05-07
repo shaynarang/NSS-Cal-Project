@@ -6,14 +6,14 @@ class Cal
     if @month > 0 and @year == 0
       @year = @month
       @month = 1
-      print_year
+      puts format_year
     elsif @month == 0 and @year == 0
       time = Time.new
       @year = time.year
       @month = time.month
-      print_month
+      puts format_month
     else
-      print_month
+      puts format_month
     end
   end
 
@@ -53,58 +53,25 @@ class Cal
   end
 
   def get_dates
-    twenty_eight_day_array = []
+    storage = []
     i = 1
     while i <= 28
-      twenty_eight_day_array << i
-      twenty_eight_day_array << " "
+      storage << i
+      storage << " "
       if i <= 8
-        twenty_eight_day_array << " "
+        storage << " "
       end
       i += 1
     end
 
-    twenty_nine_day_array = []
-    j = 1
-    while j <= 29
-      twenty_nine_day_array << j
-      twenty_nine_day_array << " "
-      if j <= 8
-        twenty_nine_day_array << " "
-      end
-      j += 1
-    end
-
-    thirty_day_array = []
-    k = 1
-    while k <= 30
-      thirty_day_array << k
-      thirty_day_array << " "
-      if k <= 8
-        thirty_day_array << " "
-      end
-      k += 1
-    end
-
-    thirty_one_day_array = []
-    l = 1
-    while l <= 31
-      thirty_one_day_array << l
-      thirty_one_day_array << " "
-      if l <= 8
-        thirty_one_day_array << " "
-      end
-      l += 1
-    end
-
     if @month == 1 or @month == 3 or @month == 5 or @month == 7 or @month == 8 or @month == 10 or @month == 12
-      storage = thirty_one_day_array
+      storage = storage.push(29," ",30," ",31)
     elsif @month == 4 or @month == 6 or @month == 9 or @month == 11
-      storage = thirty_day_array    
+      storage = storage.push(29," ",30)  
     elsif @month == 2 and leap?
-      storage = twenty_nine_day_array
+      storage = storage.push(29)
     else
-      storage = twenty_eight_day_array
+      storage
     end
 
     if get_first_day == "Sunday"
@@ -117,49 +84,44 @@ class Cal
       storage = storage.unshift(spacer(10))
     elsif get_first_day == "Thursday"
       storage = storage.unshift(spacer(13))
-    elsif get_first_day == "Friday" and (@month == 2)
+    elsif get_first_day == "Friday" and @month == 2
       storage = storage.unshift(spacer(16))
-      storage = storage.join.rstrip
-      storage[20] = "\n"
-      storage[41] = "\n"
-      storage[62] = "\n"
-      storage[83] = "\n"
-      return storage
+      line_breaker(storage)
     elsif get_first_day == "Friday"
       storage = storage.unshift(spacer(16))
-      storage = storage.join.rstrip
-      storage[20] = "\n"
-      storage[41] = "\n"
-      storage[62] = "\n"
-      storage[83] = "\n"
-      storage[104] = "\n"
-      return storage
-    elsif get_first_day == ("Saturday") and (@month == 2)
+      line_breaker(storage)
+    elsif get_first_day == "Saturday" and @month == 2
       storage = storage.unshift(spacer(19))
-      storage = storage.join.rstrip
-      storage[20] = "\n"
-      storage[41] = "\n"
-      storage[62] = "\n"
-      storage[83] = "\n"
-      return storage
+      line_breaker(storage)
     elsif get_first_day == "Saturday"
       storage = storage.unshift(spacer(19))
-      storage = storage.join.rstrip
-      storage[20] = "\n"
-      storage[41] = "\n"
-      storage[62] = "\n"
-      storage[83] = "\n"
-      storage[104] = "\n"
-      return storage
+      line_breaker(storage)
     end
 
-  storage = storage.join.rstrip
-  storage[20] = "\n"
-  storage[41] = "\n"
-  storage[62] = "\n"
-  storage[83] = "\n"
-  storage
+  line_breaker(storage)
 
+  end
+
+  def line_breaker(storage)
+    storage = storage.join.rstrip
+    storage[20] = "\n"
+    storage[41] = "\n"
+    storage[62] = "\n"
+    storage[83] = "\n"
+    if storage[104] == nil
+      return storage
+    else
+      storage[104] = "\n"
+    end
+    storage
+  end
+
+  def spacer(n)
+    spaces = ""
+    n.times do
+      spaces << " "
+    end
+    spaces
   end
 
   def get_week(week)
@@ -173,33 +135,27 @@ class Cal
     elsif week == 3
       date_string.slice(63..82)
     elsif week == 4
-      date_string.slice(84..103) 
+        date_string.slice(84..103)
     elsif week == 5
       if date_string.slice(105..124) == nil
-        return "                    "
+        if @month == 3 or @month == 6 or @month == 9 or @month == 12
+          ""
+        else
+          spacer(20)
+        end
       else
         date_string.slice(105..124)
       end
     end
   end
 
-  def spacer(n)
-    spaces = ""
-    n.times do
-      spaces << " "
-    end
-    spaces
-  end
-
-  def print_month
+  def format_month
     header = "#{get_month_header} #{@year}"
     header = header.center(20).rstrip
-    puts "#{header}\n#{get_days_of_week}\n#{get_dates}\n\n"
-    return "#{get_month_header} #{@year}\n#{get_days_of_week}\n#{get_dates}\n\n"
+    return "#{header}\n#{get_days_of_week}\n#{get_dates}\n\n"
   end
 
-  def print_year
-
+  def format_year
     compiled_year = ""
 
     starting_index = 1
@@ -233,8 +189,12 @@ class Cal
         @month = month
         week_lines << get_week(week_index)
         if get_week(week_index).size < 20
-          buffer = 20 - get_week(week_index).size
-          week_lines << spacer(buffer)
+          if @month == 3 or @month == 6 or @month == 9 or @month == 12
+            week_lines.rstrip
+          else
+            buffer = 20 - get_week(week_index).size
+            week_lines << spacer(buffer)
+          end
         end
         if @month == ending_index
           week_lines << "\n"
@@ -248,13 +208,11 @@ class Cal
     ending_index += 3
 
     compiled_year << "#{month_line}#{day_line}#{week_lines}"
-
     end
-    year_title = @year
-    year_title = year_title.to_s
-    year_title = year_title.center(65).rstrip
-    puts "#{year_title}\n\n#{compiled_year}"
 
+    year_title = @year.to_s
+    year_title = year_title.center(62).rstrip
+    "#{year_title}\n\n#{compiled_year}"
   end
 
 end
@@ -262,7 +220,6 @@ end
 if __FILE__ == $0
   month = ARGV[0]
   year = ARGV[1]
-  output = Cal.new(month, year)
-  # output.print_month
+  Cal.new(month, year)
 end
   
